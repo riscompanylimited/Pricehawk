@@ -1,5 +1,5 @@
 [build]
-builder = "nixpacks"
+builder = "railpack"
 
 # Cron job for price alerts
 [[cron]]
