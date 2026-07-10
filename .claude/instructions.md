@@ -83,7 +83,7 @@ Create documentation after:
 - **Environments**:
   - SIT: pricehawk-uat.up.railway.app
   - UAT: pricehawk-uat.up.railway.app
-  - PRD: pricehawk-production-d139.up.railway.app
+  - PRD: pricehawk-production-0e37.up.railway.app
 - **Base Product**: Thai Watsadu (TWD) - all other retailers match against this
 - **Key Retailers**: HomePro, MegaHome, Do Home, Boonthavorn, Global House
 
