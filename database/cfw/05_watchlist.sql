@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS watchlist_products (
 CREATE INDEX IF NOT EXISTS idx_watchlist_products_watchlist ON watchlist_products(watchlist_id);
 CREATE INDEX IF NOT EXISTS idx_watchlist_products_product ON watchlist_products(product_id);
 
+DROP TRIGGER IF EXISTS update_watchlists_updated_at ON watchlists;
 CREATE TRIGGER update_watchlists_updated_at
     BEFORE UPDATE ON watchlists
     FOR EACH ROW

@@ -16,9 +16,3 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (username, hashed_password) VALUES
     ('admin', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYqJQx0cK6W')
 ON CONFLICT (username) DO NOTHING;
-
--- Auto-update trigger for users table
-CREATE TRIGGER update_users_updated_at
-    BEFORE UPDATE ON users
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();

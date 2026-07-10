@@ -5,6 +5,7 @@ import subprocess
 import urllib.request
 import uuid
 import re as _re
+import sys
 
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
@@ -96,7 +97,7 @@ def scrape_single_url(url: str) -> dict:
         output_file = os.path.join(RESULTS_DIR, f"scrape_{uuid.uuid4().hex}.json")
         os.makedirs(RESULTS_DIR, exist_ok=True)
 
-        cmd = ["python", SCRAPER_SCRIPT, "--url", url, "--output-file", output_file, "--timeout", "60"]
+        cmd = [sys.executable, SCRAPER_SCRIPT, "--url", url, "--output-file", output_file, "--timeout", "60"]
         env = os.environ.copy()
         env["PYTHONIOENCODING"] = "utf-8"
 
