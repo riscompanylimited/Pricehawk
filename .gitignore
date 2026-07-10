@@ -24,3 +24,6 @@ out
 results
 
 .html
+
+# Makro scraper - per-run output CSVs (ephemeral, real output goes to the DB)
+backend/scrapers/makro/output_*.csv

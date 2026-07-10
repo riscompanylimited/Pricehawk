@@ -1,0 +1,974 @@
+{
+  "01": {
+    "store_code": "01",
+    "name": "Lardprao",
+    "address": "3498 Ladprao Road, Klongjan, Bangkapi, Bangkok 10240",
+    "postcode": "10240"
+  },
+  "02": {
+    "store_code": "02",
+    "name": "Chaengwattana",
+    "address": "34/54 Moo 1, Changwattana Road, Tumbol klongglur, Amuphur Pakkred, Nonthaburi 11120",
+    "postcode": "11120"
+  },
+  "03": {
+    "store_code": "03",
+    "name": "Srinakarin",
+    "address": "422 Moo 5, Srinakarin Road, Tumbol Sumrongnua, Aumphur Muang, Samutprakarn 10270",
+    "postcode": "10270"
+  },
+  "04": {
+    "store_code": "04",
+    "name": "Bangbon",
+    "address": "210 Kanchanaphisek Road, Bangbon, Bangbon, Bangkok 10150",
+    "postcode": "10150"
+  },
+  "05": {
+    "store_code": "05",
+    "name": "Chonburi",
+    "address": "55/3 Moo 2, Sukhumvit Road, Tumbol Samet, Aumphur Muang Chonburi, Chonburi 20000",
+    "postcode": "20000"
+  },
+  "06": {
+    "store_code": "06",
+    "name": "Chiangmai",
+    "address": "152 Moo 6, Super Highway Road, Tambon Nongpakrang, Aumphoe Muang Chiangmai, Chiangmai 50000",
+    "postcode": "50000"
+  },
+  "07": {
+    "store_code": "07",
+    "name": "Nakhon Ratchasima",
+    "address": "523 Mittraprab - nongkai Road, Tumbol Naimuang, Aumphur Muang Nakorn Ratchasima, Nakorn Ratchasima 30000",
+    "postcode": "30000"
+  },
+  "08": {
+    "store_code": "08",
+    "name": "Rangsit",
+    "address": "189 Phaholyothin Road, Tumbol Prachatipat, Aumphur Tanburi, Prathumthanee 12130",
+    "postcode": "12130"
+  },
+  "09": {
+    "store_code": "09",
+    "name": "Hat Yai",
+    "address": "414 Kanchanavanich Road Tumbol Korhong, Aumphur Hat Yai, Songkla 90110",
+    "postcode": "90110"
+  },
+  "10": {
+    "store_code": "10",
+    "name": "Udon Thani",
+    "address": "207/3 Moo 14, Tumbol Markkeang, Aumphur Muang Udon Thani, Udon Thani 41000",
+    "postcode": "41000"
+  },
+  "11": {
+    "store_code": "11",
+    "name": "Phitsanulok",
+    "address": "1199 Baromatrilokanart 2 Road, Tumbol Naimuang, Aumphur Muang Pitsanulok, Pitsanulok 65000",
+    "postcode": "65000"
+  },
+  "12": {
+    "store_code": "12",
+    "name": "Khon Kaen",
+    "address": "195 Moo 12, Mittraprab Road, Tumbol Naimuang, Aumphur Muang Khon Kaen, Khon Kaen 40000",
+    "postcode": "40000"
+  },
+  "13": {
+    "store_code": "13",
+    "name": "Surat Thani",
+    "address": "216 Moo 4, Chonkaseam Road, Tumbol Makhamteai, Aumphur Muang Surat Thani, Surat Thani 84000",
+    "postcode": "84000"
+  },
+  "14": {
+    "store_code": "14",
+    "name": "Ubon Ratchathani",
+    "address": "333 Moo 15, Tumbol Makhamyai, Aumphur Muang Ubon Ratchathani, Ubon Ratchathani 34000",
+    "postcode": "34000"
+  },
+  "15": {
+    "store_code": "15",
+    "name": "Rayong",
+    "address": "8/2 Moo 3, Tumbol Tabma, Aumphur Muang Rayong, Rayong 21000",
+    "postcode": "21000"
+  },
+  "16": {
+    "store_code": "16",
+    "name": "Nakornsawan",
+    "address": "67/15 Moo 6, Tumbol Nakornsawanaok, Aumphur Muang Nakornsawan, Nakornsawan 60000",
+    "postcode": "60000"
+  },
+  "17": {
+    "store_code": "17",
+    "name": "Charansanitwongse",
+    "address": "521, 521/27 Charansanitwongse Road, Bangkunsri, Bangkoknoi, Bangkok 10700",
+    "postcode": "10700"
+  },
+  "18": {
+    "store_code": "18",
+    "name": "Sathorn",
+    "address": "1 Narathiwatratchanakarin Road, Tungdon, Sathorn, Bangkok 10120",
+    "postcode": "10120"
+  },
+  "19": {
+    "store_code": "19",
+    "name": "Nakhon Pathom",
+    "address": "86 Moo 13, Tumbol Prongmadua, Aumphur Muang Nakhon Pathom, Nakhon Pathom 73000",
+    "postcode": "73000"
+  },
+  "20": {
+    "store_code": "20",
+    "name": "Surin",
+    "address": "4/3 Lukmuang Road, Tumbol Naimuang, Aumphur Muang Surin, Surin 32000",
+    "postcode": "32000"
+  },
+  "21": {
+    "store_code": "21",
+    "name": "Samsen",
+    "address": "935/11 Samsean Road, Tanonnakornchaisri, Dusit, Bangkok 10300",
+    "postcode": "10300"
+  },
+  "22": {
+    "store_code": "22",
+    "name": "Nakhon Si Thammarat",
+    "address": "93/7 Moo 2, Krarom Road, Tumbol Posadej, Amphur Muang Nakhon Si Thammarat, Nakhon Si Thammarat 80000",
+    "postcode": "80000"
+  },
+  "23": {
+    "store_code": "23",
+    "name": "Chiang Rai",
+    "address": "12 Moo 7, Tumbol Bandu, Amphur Muang Chiang Rai, Chiang Rai 57100",
+    "postcode": "57100"
+  },
+  "24": {
+    "store_code": "24",
+    "name": "Sakol Nakorn",
+    "address": "459 Moo 3, Bannoksomhong Road, Tumbol Tardchangchum, Amphur Muang Sakol Nakorn, Sakol Nakorn 47000",
+    "postcode": "47000"
+  },
+  "25": {
+    "store_code": "25",
+    "name": "Suphan Buri",
+    "address": "290/2 Moo 4, Tumbol Sanamchai, Aumphur Muang Suphan Buri, Suphan Buri 72000",
+    "postcode": "72000"
+  },
+  "26": {
+    "store_code": "26",
+    "name": "Chanthaburi",
+    "address": "108/1 Saritidet, Tambon Wat Mai, Amphoe Muang Chanthaburi, Chanthaburi 22000",
+    "postcode": "22000"
+  },
+  "27": {
+    "store_code": "27",
+    "name": "Phuket",
+    "address": "77 Moo 5, Tumbol Vichit, Amphur Muang Phuket, Phuket 83000",
+    "postcode": "83000"
+  },
+  "28": {
+    "store_code": "28",
+    "name": "Roi Et",
+    "address": "32/1 Tavapibarn Road, Tumbol Naimuang, Aumphur Muang Roi Et, Roi Et 45000",
+    "postcode": "45000"
+  },
+  "29": {
+    "store_code": "29",
+    "name": "Trang",
+    "address": "89 Moo 2, Tumbol Koklor, Aumphur Muang Trang, Trang 92000",
+    "postcode": "92000"
+  },
+  "30": {
+    "store_code": "30",
+    "name": "Sakaeo",
+    "address": "1000 Suwansorn Road, Tumbol Sakaeo, Aumphur Muang Sakaeo, Sakaeo 27000",
+    "postcode": "27000"
+  },
+  "31": {
+    "store_code": "31",
+    "name": "Ko Samui",
+    "address": "115/52 Moo 6, Tumbol Borpud, Aumphur Koh Samui, Surat Thani 84320",
+    "postcode": "84320"
+  },
+  "32": {
+    "store_code": "32",
+    "name": "Burirum",
+    "address": "151 Moo 7, Tumbol Esan, Aumphur Muang Burirum, Burirum 31000",
+    "postcode": "31000"
+  },
+  "33": {
+    "store_code": "33",
+    "name": "Sisaket",
+    "address": "112 Moo 6, Tumbol Po, Aumphur Muang Sisaket, Sisaket 33000",
+    "postcode": "33000"
+  },
+  "34": {
+    "store_code": "34",
+    "name": "Lamphun",
+    "address": "204 Moo 4, Tumbol Banklang, Aumphur Muang Lumpoon, Lumpoon 51000",
+    "postcode": "51000"
+  },
+  "35": {
+    "store_code": "35",
+    "name": "Krabi",
+    "address": "119 Moo 1, Tumbol Saithai, Aumphur Muang Krabi, Krabi 81000",
+    "postcode": "81000"
+  },
+  "36": {
+    "store_code": "36",
+    "name": "Phetchaburi",
+    "address": "103 Moo 1, Tambon Wang Tako, Aumphoe Muang Phetchaburi, Phetchaburi 76000",
+    "postcode": "76000"
+  },
+  "37": {
+    "store_code": "37",
+    "name": "Chaiyaphum",
+    "address": "999 Moo 9,Chaiyaphum  - Sikhio Road, Tambonl Nong Na Saeng, Aumphoe Muang Chaiyaphum, Chaiyaphum 36000",
+    "postcode": "36000"
+  },
+  "38": {
+    "store_code": "38",
+    "name": "Saraburi",
+    "address": "66/3 Moo 2, Tumbol Talingchan, Aumphur Muang Saraburi, Saraburi 18000",
+    "postcode": "18000"
+  },
+  "39": {
+    "store_code": "39",
+    "name": "Pranburi",
+    "address": "567 Moo 3, Tambon Khao Noi, Aumphur Pranburi, Prachuapkhirikhan 77120",
+    "postcode": "77120"
+  },
+  "40": {
+    "store_code": "40",
+    "name": "Chachoengsao",
+    "address": "21/4 Moo 5, Tumbol Wangtakien, Aumphur Muang Chachoengsao, Chachoengsao 24000",
+    "postcode": "24000"
+  },
+  "41": {
+    "store_code": "41",
+    "name": "Chiang Mai2 (Hang Dong)",
+    "address": "191 Moo 7, Tumbol Maehiya, Aumphur Muang Chiangmai, Chiangmai 50100",
+    "postcode": "50100"
+  },
+  "42": {
+    "store_code": "42",
+    "name": "Ramintra",
+    "address": "904 Ramintra Road, Kannayao, Bangkok 10230",
+    "postcode": "10230"
+  },
+  "43": {
+    "store_code": "43",
+    "name": "Chumphon",
+    "address": "199 Moo 5, Tumbol Wangpai, Aumphur Muang Chumphon, Chumphon 86000",
+    "postcode": "86000"
+  },
+  "44": {
+    "store_code": "44",
+    "name": "South Pattaya",
+    "address": "22/24 Moo 11, Tumbol Nongprue, Aumphur Banglamung, Chonburi 20150",
+    "postcode": "20150"
+  },
+  "45": {
+    "store_code": "45",
+    "name": "Kamphaeng Phet",
+    "address": "889 Rajdamnern 1 Road, Tumbol Naimuang, Aumphur Muang Kamphaeng Phet, Kamphaeng Phet, 62000",
+    "postcode": "62000"
+  },
+  "46": {
+    "store_code": "46",
+    "name": "Kanchanaburi",
+    "address": "102 Moo 2, Tumbol Tarlor, Aumphur Tarmuang, Kanchanaburi 71000",
+    "postcode": "71000"
+  },
+  "47": {
+    "store_code": "47",
+    "name": "Lopburi",
+    "address": "227 Moo 5, Tumbol Tahsala, Aumphur Muang Lopburi, Lopburi 15000",
+    "postcode": "15000"
+  },
+  "48": {
+    "store_code": "48",
+    "name": "Nong Khai",
+    "address": "232 Moo 12, Tumbol Phochai, Amphur Muang Nong Khai, Nong Khai 43000",
+    "postcode": "43000"
+  },
+  "49": {
+    "store_code": "49",
+    "name": "Ratchaburi",
+    "address": "249 Moo 11, Tumbol Chedihak, Aumphur Muang Ratchaburi, Ratchaburi 70000",
+    "postcode": "70000"
+  },
+  "50": {
+    "store_code": "50",
+    "name": "Mae Rim",
+    "address": "212 Moo 4, Tumbol Mae Sa, Aumphur Mae Rim, Chiang Mai 50180",
+    "postcode": "50180"
+  },
+  "51": {
+    "store_code": "51",
+    "name": "Ayutthaya",
+    "address": "222 Moo. 2, Tumbol Kanham, Amphur Uthai, Pranakhonsiayutthaya 13210",
+    "postcode": "13210"
+  },
+  "52": {
+    "store_code": "52",
+    "name": "Lamphang",
+    "address": "110/3 Lampang-Ngao-Highway Road, Tumbol Pharbat, Aumphur Muang Lamphang, Lamphang 52000",
+    "postcode": "52000"
+  },
+  "53": {
+    "store_code": "53",
+    "name": "Hua Hin",
+    "address": "Makro foodservice Hua Hin Branch\n58/164 Soi Moo Baan Bo Fai, Tambol Hua Hin, Amphur Hua Hin, Prachuapkirikan 77110",
+    "postcode": "77110"
+  },
+  "54": {
+    "store_code": "54",
+    "name": "Khlong Luang",
+    "address": "39 Moo. 7, Tambol Khlong Song, Ampor Khlongluang, Pathumthani 12120",
+    "postcode": "12120"
+  },
+  "55": {
+    "store_code": "55",
+    "name": "Loei",
+    "address": "118 Moo 11, Tumbol Na An, Amphur Muang Loei, Loei 42000",
+    "postcode": "42000"
+  },
+  "56": {
+    "store_code": "56",
+    "name": "Phetchabun",
+    "address": "300 Kachaseni Road, Tambol Chonpai, Amphur Muangphetchaboon, 67000",
+    "postcode": "67000"
+  },
+  "57": {
+    "store_code": "57",
+    "name": "Bang Plee",
+    "address": "79 Moo 1 Tambol Racha Thewa, Amphur Bang Plee, Samut Prakan 10540",
+    "postcode": "10540"
+  },
+  "58": {
+    "store_code": "58",
+    "name": "Mukdahan",
+    "address": "4/9 Chayangkul Road, Tambol Mukdahan, Amphur Muang Mukdahan, Mukdahan 49000",
+    "postcode": "49000"
+  },
+  "59": {
+    "store_code": "59",
+    "name": "Satun",
+    "address": "889 Moo.6, Tambol Khlong Khut, Amphue Muang Satun, Satun 91000",
+    "postcode": "91000"
+  },
+  "60": {
+    "store_code": "60",
+    "name": "Trat",
+    "address": "1138 Moo.1, Tambon Wang Krachae, Amphoe Muang Trat, Trat 23000",
+    "postcode": "23000"
+  },
+  "61": {
+    "store_code": "61",
+    "name": "Chum Phae",
+    "address": "201 Moo 2, Maliwan Road, Tambon Nong-Phai, Amphoe Chum Phae, Khon Kaen 40130",
+    "postcode": "40130"
+  },
+  "62": {
+    "store_code": "62",
+    "name": "Rawai",
+    "address": "5/47 M.5 Tumbol Rawai , Amphor Muang, Phuket 83130",
+    "postcode": "83130"
+  },
+  "63": {
+    "store_code": "63",
+    "name": "Nakhon Phanom",
+    "address": "405, Nitayo Road, Tambol Nongyat Amphoe Nakhon Phanom, Nakhon Phanom 48000",
+    "postcode": "48000"
+  },
+  "64": {
+    "store_code": "64",
+    "name": "Ko Pha-Ngan",
+    "address": "114/5  Moo 1, Tambol KO PHA-NGAN Amphoe KO PHA-NGAN, Suratthani 84280",
+    "postcode": "84280"
+  },
+  "65": {
+    "store_code": "65",
+    "name": "Bueng Kan",
+    "address": "680 Moo 7, Tumbol Wisit, Amphoe Mueang Bueng Kan, Bueng Kan 38000",
+    "postcode": "38000"
+  },
+  "66": {
+    "store_code": "66",
+    "name": "Pattaya N.",
+    "address": "555/1 M.6 Na Kluea, Bang Lamung, Chon Buri 20150",
+    "postcode": "20150"
+  },
+  "67": {
+    "store_code": "67",
+    "name": "Mae Sai",
+    "address": "740 Moo 9, Tambon Wiang Phang Kham, Amphoe Mae Sai, Chiang Rai 57130",
+    "postcode": "57130"
+  },
+  "68": {
+    "store_code": "68",
+    "name": "Salaya",
+    "address": "87/18 Moo 3, Tambon Salaya, Amphoe Phutthamonthon, Nakhon Pathom 73170",
+    "postcode": "73170"
+  },
+  "69": {
+    "store_code": "69",
+    "name": "Phatthalung",
+    "address": "207 Moo 9, Tambon Thamiram, Amphoe Mueang Phatthalung, Phatthalung 93000",
+    "postcode": "93000"
+  },
+  "70": {
+    "store_code": "70",
+    "name": "Sukhothai",
+    "address": "236 Moo 4, Tambol Ban Lum, Amphoe Mueang Sukhothai 64000",
+    "postcode": "64000"
+  },
+  "71": {
+    "store_code": "71",
+    "name": "Patong",
+    "address": "140/30,140/35 Nanai Road, Patong, Kathu, Phuket 83150",
+    "postcode": "83150"
+  },
+  "72": {
+    "store_code": "72",
+    "name": "Samutsakhon",
+    "address": "99/555 Moo 4, Ekkachai Road, Tambon Khokham, Amphoe Mueang Samutsakhon 74000",
+    "postcode": "74000"
+  },
+  "73": {
+    "store_code": "73",
+    "name": "Mae Sot",
+    "address": "98/1, Sai Asia Road, Tambon Mae Sot, Amphoe Mae Sot, Tak 63110",
+    "postcode": "63110"
+  },
+  "74": {
+    "store_code": "74",
+    "name": "Pakchong",
+    "address": "889 หมู่ที่ 8 ตำบลหนองน้ำแดง อำเภอปากช่อง จังหวัดนครราชสีมา 30130",
+    "postcode": "30130"
+  },
+  "75": {
+    "store_code": "75",
+    "name": "Talang",
+    "address": "365 Moo 1, Tumbol Thep Krasattri, Amphoe Thalang, Phuket 83110",
+    "postcode": "83110"
+  },
+  "76": {
+    "store_code": "76",
+    "name": "Ranong",
+    "address": "86/9 Moo 2, Tumbol Bang Rin, Amphoe Muang Ranong, Ranong 85000",
+    "postcode": "85000"
+  },
+  "77": {
+    "store_code": "77",
+    "name": "Lamai",
+    "address": "199 Moo 3, Tumbol Ma Ret, Amphoe Koh Sa-Mui, Suratthani 84310",
+    "postcode": "84310"
+  },
+  "78": {
+    "store_code": "78",
+    "name": "Kanlapaphruek",
+    "address": "16/6 Moo 8, Bang Khun Thian, Chom Thong, Bangkok 10150",
+    "postcode": "10150"
+  },
+  "79": {
+    "store_code": "79",
+    "name": "Yasothon",
+    "address": "324 Moo. 2, Thadthong, Muang, Yasothon 35000",
+    "postcode": "35000"
+  },
+  "80": {
+    "store_code": "80",
+    "name": "Mahasarakam",
+    "address": "253 Moo.8, Kerng, Muang, Mahasarakam 44000",
+    "postcode": "44000"
+  },
+  "81": {
+    "store_code": "81",
+    "name": "Fang",
+    "address": "61 Moo.3 Sansai, Fang, Chiang Mai 50110",
+    "postcode": "50110"
+  },
+  "82": {
+    "store_code": "82",
+    "name": "Nakhon Nayok",
+    "address": "176 Moo. 5, Ban Yai, Muang, Nakhon Nayok 26000",
+    "postcode": "26000"
+  },
+  "83": {
+    "store_code": "83",
+    "name": "Nakhon In",
+    "address": "60 Moo 1, Tambon Bang Phai, Amphoe Mueang, Nonthaburi 11000",
+    "postcode": "11000"
+  },
+  "84": {
+    "store_code": "84",
+    "name": "Ban Phe",
+    "address": "301 Moo 2, Tambon  Phe, Amphoe Mueang Rayong, Rayong 21160",
+    "postcode": "21160"
+  },
+  "85": {
+    "store_code": "85",
+    "name": "Thung Song",
+    "address": "638 Moo 1, Tambon  Chamai, Amphoe Thung Song, Nakhon SI Thammarat 80110",
+    "postcode": "80110"
+  },
+  "86": {
+    "store_code": "86",
+    "name": "Srinakarin 2",
+    "address": "20 Srinakarin Road, Nong Bon, Prawet, Bangkok 10250",
+    "postcode": "10250"
+  },
+  "87": {
+    "store_code": "87",
+    "name": "Phayao",
+    "address": "459/5 Phahonyothin Road, Tambon Mae Tam, Amphoe Mueang Phayao, Phayao 56000",
+    "postcode": "56000"
+  },
+  "88": {
+    "store_code": "88",
+    "name": "",
+    "address": "",
+    "postcode": null
+  },
+  "89": {
+    "store_code": "89",
+    "name": "Phitsanulok 2",
+    "address": "410/4 Moo7,Tambon Samo Khae, Amphoe Mueang Phitsanulok,  Phitsanulok 65000",
+    "postcode": "65000"
+  },
+  "100": {
+    "store_code": "100",
+    "name": "Phrae",
+    "address": "204 Moo 7, Tambon Na Chak, Amphoe Mueang Phrae, Phrae 54000",
+    "postcode": "54000"
+  },
+  "101": {
+    "store_code": "101",
+    "name": "Ko Chang",
+    "address": "99/30 Moo4, Tambon Ko Chang, Amphoe Ko Chang Tart 23170",
+    "postcode": "23170"
+  },
+  "102": {
+    "store_code": "102",
+    "name": "Nakhon Ratchsima 2",
+    "address": "587 Moo10, Tambon Nong Bua Sala, Amphoe Mueang Nakhon Ratchasima, Nakhon Ratchasima 30000",
+    "postcode": "30000"
+  },
+  "103": {
+    "store_code": "103",
+    "name": "Nan",
+    "address": "183,186 Moo5, Tambona, Amphoe Mueang Nan, Nan 55000",
+    "postcode": "55000"
+  },
+  "104": {
+    "store_code": "104",
+    "name": "Ao Nang",
+    "address": "739 Moo 2, Tambon Ao Nang, Amphoe Mueang Krabi, Krabi 81180",
+    "postcode": "81180"
+  },
+  "105": {
+    "store_code": "105",
+    "name": "Karon",
+    "address": "Moo10, Tambon, Amphoe Mueang Phuket, Phuket 83100",
+    "postcode": "83100"
+  },
+  "106": {
+    "store_code": "106",
+    "name": "Warin Chamrap",
+    "address": "106 Moo 20,Tambon Saen Suk, Amphoe Warin Chamrap, Ubon Ratchathani, 34190",
+    "postcode": "34190"
+  },
+  "107": {
+    "store_code": "107",
+    "name": "Nong Bua Lamphu",
+    "address": "150 Moo. 3, Tumbol Lamphu, Aumphur Muang Nong Bua Lamphu, Nong Bua Lamphu 39000",
+    "postcode": "39000"
+  },
+  "108": {
+    "store_code": "108",
+    "name": "Nong Chok",
+    "address": "80 Liap Wari Road,Krathum Rai,Nong Chok, Bangkok 10530",
+    "postcode": "10530"
+  },
+  "109": {
+    "store_code": "109",
+    "name": "Laem Chabang",
+    "address": "1/1  Moo 10,Tambon Thung Suk La,Amphoe Si Racha,Chonburi 20230",
+    "postcode": "20230"
+  },
+  "110": {
+    "store_code": "110",
+    "name": "Prachuap Khiri Khan",
+    "address": "5/1 Phetkasem Rd,Tumbon Ko Lek, Amphoe Mueang  PrachuapKhiri Khan, PrachuapKhiri Khan 77000",
+    "postcode": "77000"
+  },
+  "111": {
+    "store_code": "111",
+    "name": "Petchkasem",
+    "address": "1759/4  Phetkasem Rd, Lak Song,Bang Khae.Bangkok 10160",
+    "postcode": "10160"
+  },
+  "112": {
+    "store_code": "112",
+    "name": "Bangpoo",
+    "address": "858/21 Moo1, Tambon Bang Pu Mai, Amphoe Mueang,Samut Prakan 10280",
+    "postcode": "10280"
+  },
+  "113": {
+    "store_code": "113",
+    "name": "Wang Hin",
+    "address": "758 Lat Phrao Wang Hin Road,khwaeng Lat Phrao, Khet Lat Phrao Bangkok 10230",
+    "postcode": "10230"
+  },
+  "114": {
+    "store_code": "114",
+    "name": "Sing Buri",
+    "address": "190 Sai Asia 32 Road, Tumbol Bang Man, Amphur Muang Singburi, Sing Buri, 16000",
+    "postcode": "16000"
+  },
+  "115": {
+    "store_code": "115",
+    "name": "Bang Bua Thong",
+    "address": "47 Moo 2, Tambon Bang Bua Thong, Amphoe Bang Bua Thong, Nonthaburi 11110",
+    "postcode": "11110"
+  },
+  "116": {
+    "store_code": "116",
+    "name": "Kalasin",
+    "address": "185/2 Kaset Sombun Rd., Tambon Kalasin, Amphoe Mueang Kalasin, Kalasin 46000",
+    "postcode": "46000"
+  },
+  "117": {
+    "store_code": "117",
+    "name": "Udomsuk",
+    "address": "176 Udomsuk Road, Bang Na, Bang Na,  Bangkok 10260",
+    "postcode": "10260"
+  },
+  "118": {
+    "store_code": "118",
+    "name": "Ramkhamhaeng (Sammakorn)",
+    "address": "94 Ramkhamhaeng Road, Saphan Sung Sub District, Saphan Sung District, Bangkok 10240",
+    "postcode": "10240"
+  },
+  "119": {
+    "store_code": "119",
+    "name": "Phichit",
+    "address": "Siam Makro Public Company Limited, Phichit Branch 310  Moo 3, Tambon Khlong Khachen , Amphoe Mueang, Phichit 66000",
+    "postcode": "66000"
+  },
+  "120": {
+    "store_code": "120",
+    "name": "Pathum Thani",
+    "address": "9/20  Moo.1, Tambol Ban Chang , Ampor Pathumthani , Pathumthani 12000",
+    "postcode": "12000"
+  },
+  "121": {
+    "store_code": "121",
+    "name": "Bodindecha",
+    "address": "361/1 Soi Lat Phrao 94 (Pancha Mit), Phlabphla, Wang Thonglang, Bangkok 10310",
+    "postcode": "10310"
+  },
+  "122": {
+    "store_code": "122",
+    "name": "Pracha Uthit",
+    "address": "547  Pracha Uthit Road, Khwaeng Rat Burana, Khet Rat Burana, Bangkok 10140",
+    "postcode": "10140"
+  },
+  "123": {
+    "store_code": "123",
+    "name": "Sukhumvit 71",
+    "address": "181/2 Sukhumvit 71 Road, Prakanong Nua, Wattana, Bangkok 10110",
+    "postcode": "10110"
+  },
+  "124": {
+    "store_code": "124",
+    "name": "Nawamin 70",
+    "address": "1106 Nawamin Road, Klongkum, Buengkum Bangkok 10230",
+    "postcode": "10230"
+  },
+  "125": {
+    "store_code": "125",
+    "name": "Cha-Am",
+    "address": "265 ถนนนราธิป ตำบลชะอำ อำเภอชะอำ จังหวัด เพชรบุรี 76120",
+    "postcode": "76120"
+  },
+  "126": {
+    "store_code": "126",
+    "name": "Onnut",
+    "address": "903 ถนนอ่อนนุช แขวงอ่อนนุช เขตสวนหลวง กรุงเทพมหานคร 10250",
+    "postcode": "10250"
+  },
+  "127": {
+    "store_code": "127",
+    "name": "Suksawas",
+    "address": "30/9 ถนนสุขสวัสดิ์ แขวงบางประกอก เขตราษฏร์บูรณะ กรุงเทพมหานคร 10140",
+    "postcode": "10140"
+  },
+  "128": {
+    "store_code": "128",
+    "name": "Kabinburi",
+    "address": "200 Moo8 Tambon Mueang Kao, Amphoe Kabin Buri , Prageiburi 25240",
+    "postcode": "25240"
+  },
+  "129": {
+    "store_code": "129",
+    "name": "Lat Krabang",
+    "address": "583 แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520",
+    "postcode": "10520"
+  },
+  "130": {
+    "store_code": "130",
+    "name": "Nathong charoen",
+    "address": "บริษัท สยามแม็คโคร จำกัด (มหาชน) สาขานาเจริญ เลขที่ 11/28 หมู่ที่ 6 ตำบลคูคต อำเภอลำลูกกา จ.ปทุมธานี 12130",
+    "postcode": "12130"
+  },
+  "131": {
+    "store_code": "131",
+    "name": "Bo win",
+    "address": "เลขที่ 500 หมู่ที่ 4 ตำบลมาบยางพร อำเภอปลวกแดง จ.ระยอง รหัสไปรษณีย์ 21140",
+    "postcode": "21140"
+  },
+  "132": {
+    "store_code": "132",
+    "name": "Sattahip",
+    "address": "เลขที่ 88/20 หมู่ที่ 3 ตำบลสัตหีบ อำเภอสัตหีบ จังหวัดชลบุรี รหัสไปรษณีย์ 20180",
+    "postcode": "20180"
+  },
+  "133": {
+    "store_code": "133",
+    "name": "Ram Khamhang 24",
+    "address": "เลขที่ 536/1 ซอยรามคำแหง24 แขวงหัวหมาก เขตบางกะปิ กรุงเทพมหานคร 10240",
+    "postcode": "10240"
+  },
+  "134": {
+    "store_code": "134",
+    "name": "Amara Nakhon",
+    "address": "เลขที่ 97 หมู่ที่ 3 ตำบลดอนหัวฬ่อ อำเภอเมืองชลบุรี จังหวัดชลบุรี 20000",
+    "postcode": "20000"
+  },
+  "135": {
+    "store_code": "135",
+    "name": "Bang Kho Laem",
+    "address": "เลขที่ 2915  ถนนเจริญกรุง แขวงบางคอแหลม  เขตบางคอแหลม จังหวัดกรุงเทพมหานคร 10122",
+    "postcode": "10122"
+  },
+  "136": {
+    "store_code": "136",
+    "name": "Khon Kaen 2",
+    "address": "เลขที่ 235/16  หมู่ที่ 6  ตำบลในเมือง  อำเภอเมืองขอนแก่น  จังหวัดขอนแก่น 40000",
+    "postcode": "40000"
+  },
+  "137": {
+    "store_code": "137",
+    "name": "Wongsakorn 2",
+    "address": "52 Sai Mai Road, Khwaeng Sai Mai, Khet Sai Mai, Bangkok 10220",
+    "postcode": "10220"
+  },
+  "138": {
+    "store_code": "138",
+    "name": "Mengjai",
+    "address": "999/248 Pracha Uthit Road, Khwaeng Sam Sen Nok, Khet Huai Khwang, Bangkok 10310",
+    "postcode": "10310"
+  },
+  "139": {
+    "store_code": "139",
+    "name": "Sukhumvit 22",
+    "address": "34 Soi Sukhumvit 22, Khwaeng Khlong Toei, Khet Khlong Toei, Bangkok 10110",
+    "postcode": "10110"
+  },
+  "140": {
+    "store_code": "140",
+    "name": "Chan Road",
+    "address": "504 Chan Road, Thung Wat Din, Sathorn, Bangkok 10120",
+    "postcode": "10120"
+  },
+  "141": {
+    "store_code": "141",
+    "name": "Lam Luk Ka",
+    "address": "222 Moo 3, Tambon Khu Khot, Amphoe Lam Luk Ka, Pathum Thani 12130",
+    "postcode": "12130"
+  },
+  "142": {
+    "store_code": "142",
+    "name": "Phraeksa",
+    "address": "959, 986-989 Moo 2, Tambon Thai Ban Mai, Amphoe Mueang, Samut Prakan 10280",
+    "postcode": "10280"
+  },
+  "143": {
+    "store_code": "143",
+    "name": "Pradit Manutham",
+    "address": "173 Praditmanutham Road, Lad Phrao Subdistrict, Lat Phrao District, Bangkok 10230",
+    "postcode": "10230"
+  },
+  "144": {
+    "store_code": "144",
+    "name": "Rungroj Market",
+    "address": "111/1330, Moo 1, Bueng Yitho Sub-district, Thanyaburi District, Pathum Thani Province 12130",
+    "postcode": "12130"
+  },
+  "145": {
+    "store_code": "145",
+    "name": "Phong Phet",
+    "address": "20/79 Ngamwongwan Road Thung Song Hong, Lak Si, Bangkok 10210",
+    "postcode": "10210"
+  },
+  "146": {
+    "store_code": "146",
+    "name": "Uttaradit",
+    "address": "187/1-6,187/19 Borom At Road, Tambon Tha It, Amphoe Mueang Uttaradit, Uttatadit 53000",
+    "postcode": "53000"
+  },
+  "147": {
+    "store_code": "147",
+    "name": "Muangthong",
+    "address": "91/11 Moo Tambon Ban Mai, Amphoe Pak Kret, Nonthaburi 11120",
+    "postcode": "11120"
+  },
+  "148": {
+    "store_code": "148",
+    "name": "Leab Klongsong",
+    "address": "165, Klong Song Road, Bang Chan, Khlong Sam Wa, Bangkok 10510",
+    "postcode": "10510"
+  },
+  "149": {
+    "store_code": "149",
+    "name": "Om Noi",
+    "address": "140 Moo 13, Tumbol Om Noi, Amuphur Kratumban, Samut Sakhon 74130",
+    "postcode": "74130"
+  },
+  "150": {
+    "store_code": "150",
+    "name": "Sanambinnam",
+    "address": "339/2, Nonthaburi Road, Tha Sai Subdistrict, Mueang Nonthaburi District, Nonthaburi 11000",
+    "postcode": "11000"
+  },
+  "151": {
+    "store_code": "151",
+    "name": "Thep Rak",
+    "address": "18 Thep Rak Road, Khwaeng Tha Raeng, Khet Bang Khen, Bangkok 10220",
+    "postcode": "10220"
+  },
+  "152": {
+    "store_code": "152",
+    "name": "Samut Songkhram",
+    "address": "7/32 Soi BangKaew, Charoen Chom Preeda Road, Tambon Mae Klong, Amphoe Mueang Samut Songkhram, Samut Songkhram 75000",
+    "postcode": "75000"
+  },
+  "153": {
+    "store_code": "153",
+    "name": "Wiang sa",
+    "address": "146/9 Moo 4, Tambon Ban Song, Amphoe Wiangsa, Surat Thani 84190",
+    "postcode": "84190"
+  },
+  "154": {
+    "store_code": "154",
+    "name": "Prachinburi",
+    "address": "243/6 Prachintakham Road, Tambon Na Mueang, Amphoe Mueang Prachinburi, Prachinburi 25000",
+    "postcode": "25000"
+  },
+  "155": {
+    "store_code": "155",
+    "name": "Pinklao",
+    "address": "Borommaratchachonnani Road, Bang Bamru Subdistrict, Bang Phlat District, Bangkok 10700",
+    "postcode": "10700"
+  },
+  "156": {
+    "store_code": "156",
+    "name": "Samutprakarn",
+    "address": "156/6 Sai Luad Road, Pak Nam Subdistrict, Samut Prakan District, Samut Prakan 10270",
+    "postcode": "10270"
+  },
+  "157": {
+    "store_code": "157",
+    "name": "Nakhon Rachasrima 3 (Save one)",
+    "address": "1475/3 Mittraphap Road, Tambon Nai Mueang, Amphoe Mueang Nakhon Ratchasima, Nakhon Ratchasima 30000",
+    "postcode": "30000"
+  },
+  "158": {
+    "store_code": "158",
+    "name": "Nakhon Sawan 2 (Phrom Nimit)",
+    "address": "124/12 Moo 10, Wat Sai Subdistrict, Mueang Sawan District, Nakhon Sawan Province 60000",
+    "postcode": "60000"
+  },
+  "159": {
+    "store_code": "159",
+    "name": "Udon Thani 2",
+    "address": "315/5 Moo 2, Tambon Ban Lueam, Amphoe Mueang Udon Thani, Udon Thani 41000",
+    "postcode": "41000"
+  },
+  "160": {
+    "store_code": "160",
+    "name": "Mahachai",
+    "address": "119 Moo 7, Tambon Tha Sai, Amphoe Mueang Samut Sakhon, Samut Sakhon 74000",
+    "postcode": "74000"
+  },
+  "161": {
+    "store_code": "161",
+    "name": "Khon Kaen3 Ban Non Muang",
+    "address": "530 Moo.3, Tambon Sila, Amphoe Mueang Khon Kaen, Khon Kaen 40000",
+    "postcode": "40000"
+  },
+  "162": {
+    "store_code": "162",
+    "name": "Amata Nakhon2",
+    "address": "98/4 Moo.1, Tambon Na Pa, Amphoe Mueang Chonburi, Chonburi 20000",
+    "postcode": "20000"
+  },
+  "163": {
+    "store_code": "163",
+    "name": "Songkhla",
+    "address": "651/51 Moo. 2, Tambon Phawong , Amphoe Mueang Songkhla , Songkhla 90100",
+    "postcode": "90100"
+  },
+  "164": {
+    "store_code": "164",
+    "name": "Chainat",
+    "address": "1241 Moo 4, Tambon Pha Ban Kluay, Amphoe Mueang Chainat, Chainat 17000",
+    "postcode": "17000"
+  },
+  "165": {
+    "store_code": "165",
+    "name": "Sri Ayutthaya Road",
+    "address": "565 Sri Ayutthaya Road, Thanon Phaya Thai, Ratchathewi, Bangkok 10400",
+    "postcode": "10400"
+  },
+  "166": {
+    "store_code": "166",
+    "name": "Rawai 2",
+    "address": "101/77 Moo. 7 Tambon Rawai, Amphoe Mueang Phuket, Phuket 83130",
+    "postcode": "83130"
+  },
+  "167": {
+    "store_code": "167",
+    "name": "จอมทอง",
+    "address": "101 หมู่ที่ 11 ตำบลข่วงเปา อำเภอ จอมทอง จังหวัด เชียงใหม่ 50160",
+    "postcode": "50160"
+  },
+  "168": {
+    "store_code": "168",
+    "name": "Ban Bueng",
+    "address": "411 Ban Bueng-Klang Road, Tambon Ban Bueng, Amphoe Ban Bueng, Chonburi 20170",
+    "postcode": "20170"
+  },
+  "169": {
+    "store_code": "169",
+    "name": "Phang Nga",
+    "address": "1/74 Moo.7 Tambon Bang Nai Si, Amphoe Takua Pa, Phang Nga 82110",
+    "postcode": "82110"
+  },
+  "170": {
+    "store_code": "170",
+    "name": "Ammart Charoen",
+    "address": "688  Moo. 8, Bung, Mueang Amnat Charoen , Amnat Charoen 37000",
+    "postcode": "37000"
+  },
+  "171": {
+    "store_code": "171",
+    "name": "Jor Hor",
+    "address": "996 Moo. 3, Cho Ho, Mueang Nakhon Ratchasima, Nakhon Ratchasima 30310",
+    "postcode": "30310"
+  },
+  "172": {
+    "store_code": "172",
+    "name": "",
+    "address": "",
+    "postcode": null
+  }
+}
