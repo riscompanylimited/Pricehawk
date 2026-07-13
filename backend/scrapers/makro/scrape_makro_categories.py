@@ -42,10 +42,10 @@ import concurrent.futures
 import json
 import os
 import re
-import subprocess
 import sys
 import time
 import csv
+import urllib.request
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -185,20 +185,23 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 
 
 def curl_post(url: str, body: dict) -> dict:
-    proc = subprocess.run(
-        ["curl", "-s", "-X", "POST", url,
-         "-H", "Content-Type: application/json", "-d", json.dumps(body)],
-        capture_output=True, text=True, timeout=30,
+    """Named curl_post for historical reasons (this used to shell out to the
+    curl binary) - now uses urllib (stdlib) so it doesn't depend on curl
+    being present in whatever container this runs in (e.g. Railway/Railpack,
+    which has no proven precedent of including curl - the existing
+    alert_checker.py service uses Python's own HTTP stack, not curl)."""
+    req = urllib.request.Request(
+        url, data=json.dumps(body).encode("utf-8"), method="POST",
+        headers={"Content-Type": "application/json"},
     )
-    return json.loads(proc.stdout)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.loads(resp.read().decode("utf-8"))
 
 
 def curl_get(url: str) -> str:
-    proc = subprocess.run(
-        ["curl", "-s", "-A", UA, url],
-        capture_output=True, text=True, timeout=30,
-    )
-    return proc.stdout
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return resp.read().decode("utf-8")
 
 
 # ============================================================================
@@ -420,6 +423,13 @@ def load_branch_names() -> dict:
 
 def get_db_connection():
     import os
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(os.path.join(_HERE, ".env"))  # local convenience only -
+        # on Railway, DATABASE_URL is injected directly as an env var and
+        # there is no .env file, so this is a harmless no-op there.
+    except ImportError:
+        pass
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
         return None
