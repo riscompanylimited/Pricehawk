@@ -49,6 +49,12 @@ import urllib.request
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
+# Force line-by-line flushing instead of Python's default buffered stdout -
+# without this, print() output can sit in a buffer and not appear in
+# Railway's log viewer until the buffer fills or the process exits, which
+# makes an actually-running job look like it's stuck or never started.
+sys.stdout.reconfigure(line_buffering=True)
+
 # ============================================================================
 # CONFIG - edit these to change what gets scraped. Nothing else in this
 # script needs to change.
@@ -576,15 +582,25 @@ def enrich_and_write_branch(branch_code: str, run_ts: str, all_products: dict,
     own CSV file and (for the DB) its own psycopg2 connection."""
 
     # ---- Step 3: Enrichment, batched, this branch only ----
+    total_batches = (len(product_ids) + ENRICH_BATCH_SIZE - 1) // ENRICH_BATCH_SIZE
+    print(f"[Branch {branch_code}] Started - enriching {len(product_ids)} products "
+          f"({total_batches} batches)")
+
     enriched_by_id = {}
     for i in range(0, len(product_ids), ENRICH_BATCH_SIZE):
         batch = product_ids[i:i + ENRICH_BATCH_SIZE]
-        print(f"Enriching batch {i // ENRICH_BATCH_SIZE + 1} "
-              f"({len(batch)} products) at branch {branch_code}...")
+        batch_num = i // ENRICH_BATCH_SIZE + 1
         results = enrich_batch(batch, branch_code)
         for p in results:
             enriched_by_id[p["id"]] = p
+        # Only log every 10th batch (plus the last one) - one line per batch
+        # would be 100+ lines per branch, times up to 8 concurrent branches,
+        # which drowns out everything else in Railway's log viewer.
+        if batch_num % 10 == 0 or batch_num == total_batches:
+            print(f"[Branch {branch_code}] Enriching... {batch_num}/{total_batches} batches done")
         time.sleep(0.3)
+
+    print(f"[Branch {branch_code}] Enrichment done, writing output...")
 
     # ---- Step 4: merge + write output ----
     fieldnames = [
@@ -669,6 +685,9 @@ def enrich_and_write_branch(branch_code: str, run_ts: str, all_products: dict,
 # ============================================================================
 
 def main():
+    print(f"=== scrape_makro_categories.py started at "
+          f"{time.strftime('%Y-%m-%d %H:%M:%S')} ===")
+
     run_ts = time.strftime("%Y%m%d_%H%M%S")   # captured once, at the start of
                                                 # this run - shared by every
                                                 # branch's output filename
