@@ -6,6 +6,8 @@ product information from various e-commerce website structures.
 """
 
 import re
+import os
+import sys
 import json
 from typing import Dict, List, Any, Optional, Union
 from urllib.parse import urljoin, urlparse
@@ -2926,125 +2928,423 @@ class GlobalHouseExtractor(ProductExtractor):
 
 
 class MakroExtractor(ProductExtractor):
-    """Extractor for makro.pro products.
+    """Makro PRO extractor — JSON-LD + rendered-DOM (+ __NEXT_DATA__ as a narrow
+    step_prices fallback only).
 
-    Makro embeds all product data in a __NEXT_DATA__ <script> tag as JSON.
-    No JavaScript execution needed — plain requests gets the full data.
-    Price is location-dependent (storeCode); the default store is used.
+    Motivation (see ai_sum/sessions/2026-07-07_makro-extractor-v2-design.md):
+    An earlier version read prices from the __NEXT_DATA__ SSR blob. This extractor
+    deliberately avoids it for the PRIMARY read and reads from two
+    framework-independent sources instead:
+      - JSON-LD Product block  -> name, description, image, current_price (base,
+                                  i.e. the 1-unit price used for cross-retailer
+                                  comparison).
+      - the rendered DOM        -> brand, original_price, step_prices, volume,
+                                  anchored on STABLE data-test-id attributes
+                                  (never the build-hashed MUI css-* classes).
+
+    step_prices come from the DOM's "Buy more save more!" slab section, which is
+    client-rendered — so this extractor REQUIRES a browser render with scroll
+    (crawl4ai in browser mode). A plain HTTP fetch shows only one tier. As a
+    SINGLE, narrow exception to the "no __NEXT_DATA__" rule, when that DOM ladder
+    comes back empty (a render/scroll shortfall) step_prices fall back to the
+    __NEXT_DATA__ slabPriceTiers, which live in the initial server HTML and so
+    survive that specific failure (see _next_data_step_prices). The DOM stays
+    authoritative for every field; __NEXT_DATA__ never overrides a present value.
+
+    It is self-contained (subclasses the generic ProductExtractor). The small
+    JSON-LD helpers below
+    (_extract_json_ld, _dig, _to_number, _norm_text, _resolve_images,
+    _calc_unit_price) are Makro-shaped and intentionally local to this class.
     """
 
     def extract_from_html(self, html_content: str, url: str = None) -> Optional[ProductData]:
-        """Extract product information from Makro Pro page."""
         product = ProductData(url=url)
 
-        # Find the __NEXT_DATA__ script tag (Next.js SSR payload)
-        next_data_match = re.search(
-            r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>',
-            html_content, re.DOTALL
-        )
-        if not next_data_match:
-            return product
+        json_ld = self._extract_json_ld(html_content) or {}
 
-        try:
-            data = json.loads(next_data_match.group(1))
-        except (json.JSONDecodeError, ValueError):
-            return product
+        # Descriptive fields straight from JSON-LD (framework-independent SEO data).
+        product.name = self._norm_text(json_ld.get('name')) or ''
+        product.description = self._norm_text(json_ld.get('description'))
+        product.images = self._resolve_images(json_ld.get('image'), None)
 
-        p = data.get('props', {}).get('pageProps', {}).get('product')
-        if not p:
-            return product
+        # current_price = base (1-unit) price from JSON-LD offers.
+        product.current_price = self._to_number(self._dig(json_ld, 'offers.price'))
 
-        # Name
-        product.name = (p.get('title') or '').strip()
-
-        # Brand
-        product.brand = (p.get('brand') or '').strip() or None
-
-        # SKU
-        product.sku = str(p.get('sku') or '').strip() or None
-
-        # Price — displayPrice is the base price (1 unit)
-        display_price = p.get('displayPrice')
-        origin_price = p.get('originPrice')
-
-        if display_price is not None:
-            try:
-                product.current_price = float(display_price)
-            except (TypeError, ValueError):
-                pass
-
-        if origin_price is not None:
-            try:
-                product.original_price = float(origin_price)
-            except (TypeError, ValueError):
-                pass
-
-        # Discount percent (from original vs display)
-        if product.current_price and product.original_price and product.original_price > product.current_price:
-            product.discount_percent = round(
-                (product.original_price - product.current_price) / product.original_price * 100, 1
-            )
-
-        # Slab/step prices (quantity-based pricing)
-        # slabPriceTiers: [{quantity, priceInVat, discount, tier}, ...]
-        slab_data = p.get('slabPrices')
-        slab_tiers = []
-        if slab_data and isinstance(slab_data, dict):
-            tiers = slab_data.get('slabPriceTiers') or []
-            for tier in sorted(tiers, key=lambda t: t.get('tier', 0)):
-                qty = tier.get('quantity')
-                price_val = tier.get('priceInVat')
-                if qty is not None and price_val is not None:
-                    slab_tiers.append({'quantity': qty, 'price': float(price_val)})
-
-        # Build step_prices list: [(min_qty, price), ...]
-        # Base tier (1 unit) + slab tiers
-        if slab_tiers and product.current_price is not None:
-            product.step_prices = [(1, product.current_price)] + [
-                (t['quantity'], t['price']) for t in slab_tiers
-            ]
-
-        product.description = (p.get('description') or '').strip() or None
-
-        # Images
-        image_urls = p.get('imageUrls') or []
-        if image_urls:
-            product.images = [img for img in image_urls if img]
-
-        # Unit/size → volume field
-        size = (p.get('size') or '').strip()
-        if size:
-            product.volume = size
-
-        # Unit price = displayPrice / pack quantity (qty extracted from size string)
-        # e.g. size="20 หน่วย" → qty=20, unit_price = displayPrice / 20
-        if product.current_price is not None and size:
-            qty_match = re.match(r'^(\d+(?:\.\d+)?)\s', size)
-            if qty_match:
-                qty = float(qty_match.group(1))
-                if qty > 1:
-                    product.unit_price = round(product.current_price / qty, 2)
+        # sku — prefer the DOM code element ("Code : 31915"): it is the clean
+        # article code Makro shows to users, unlike the URL slug which can be a
+        # long product-name string (e.g. "KOBE-YA Unagi Kabayaki - 11522 - 3P …").
+        product.sku = self._dom_sku(html_content)
+        if not product.sku and url:
+            # Fallback: derive from the URL slug. The path segment after /p/ is
+            # "<article>-<shopifyId>", so strip the trailing "-<shopifyId>". The
+            # article code may be numeric (835081), alphanumeric (brJTHNO) or
+            # contain dashes (KOBE-YA, M-02-12-01). The "product-<shopifyId>"
+            # placeholder form has no real article code -> use the Shopify id.
+            m = re.search(r'/p/([^/?#]+)', url)
+            if m:
+                seg = m.group(1)
+                if seg.startswith('product-'):
+                    product.sku = seg[len('product-'):]
                 else:
-                    product.unit_price = product.current_price
-            else:
-                product.unit_price = product.current_price
+                    product.sku = re.sub(r'-\d+$', '', seg) or seg
 
-        # Dimensions and weight from measurements object
-        measurements = p.get('measurements')
-        if measurements and isinstance(measurements, dict):
-            l = measurements.get('length') or 0
-            w = measurements.get('width') or 0
-            h = measurements.get('height') or 0
-            dim_unit = measurements.get('dimensionUnit') or 'cm'
-            wt = measurements.get('weight')
-            wt_unit = measurements.get('weightUnit') or 'kg'
-            if l or w or h:
-                product.dimensions = f"{l} x {w} x {h} {dim_unit}"
-            if wt:
-                product.weight = f"{wt}{wt_unit}"
+        # step_prices — the "Buy more save more!" slab ladder, from the DOM only.
+        product.step_prices = self._dom_step_prices(html_content)
+
+        # volume (pack size string) from the DOM, and unit_price derived from it.
+        product.volume = self._dom_volume(html_content)
+        product.unit_price = self._calc_unit_price(product.current_price, product.volume or '')
+
+        # brand — JSON-LD carries none for Makro, so read the DOM brand_title.
+        product.brand = self._dom_brand(html_content)
+
+        # original_price — the strike-through price, keyed by the product's shopify
+        # gid so we ignore related-product cards. Only kept when it is a REAL
+        # discount (strictly greater than current_price); Makro renders the element
+        # even at parity, which would otherwise fabricate a 0% discount.
+        shop_id = self._shopify_id(url, json_ld)
+        orig = self._dom_original_price(html_content, shop_id)
+        if (orig is not None and product.current_price is not None
+                and orig > product.current_price):
+            product.original_price = orig
+
+        # Recompute discount flags now that prices are set (ProductData ran this at
+        # construction, before prices existed).
+        product._calculate_discounts()
+
+        # Observability: record where prices came from and flag a DOM that looks
+        # un-rendered (step_prices/brand/original_price are DOM-only, so a plain
+        # HTTP fetch would silently drop them — surface that instead of hiding it).
+        meta = product.extraction_metadata
+        meta['price_source'] = 'json_ld' if product.current_price is not None else 'missing'
+
+        # step_prices: the DOM slab is authoritative. Fall back to the
+        # __NEXT_DATA__ ladder (server-rendered, no scroll) ONLY when the DOM
+        # ladder is empty — i.e. when a render/scroll shortfall dropped it. When
+        # both exist but disagree, keep DOM and surface the conflict (never
+        # silently reconcile). See ai_sum/past-implement/2026-07-12_*.
+        nd_steps = self._next_data_step_prices(
+            html_content, product.sku, product.current_price)
+        if not product.step_prices and nd_steps:
+            product.step_prices = nd_steps
+            meta['step_prices_source'] = 'next_data'
+        elif product.step_prices:
+            meta['step_prices_source'] = 'dom_slab'
+            if nd_steps and [list(t) for t in product.step_prices] != nd_steps:
+                meta.setdefault('conflicts', {})['step_prices_dom_vs_nextdata'] = {
+                    'dom_slab': [list(t) for t in product.step_prices],
+                    'next_data': nd_steps}
+            # tier_0 is the base rung and must equal the JSON-LD base price.
+            if (product.current_price is not None and product.step_prices[0][0] == 1
+                    and product.step_prices[0][1] != product.current_price):
+                meta.setdefault('conflicts', {})['step_tier0_vs_current'] = {
+                    'json_ld': product.current_price,
+                    'dom_tier0': product.step_prices[0][1]}
+        if 'data-test-id' not in html_content:
+            meta['dom_rendered'] = False
+            print(f"[MakroExtractor] WARNING: no data-test-id in HTML for {url} "
+                  "— DOM likely not browser-rendered; brand/step_prices/"
+                  "original_price may be missing.", file=sys.stderr)
+        elif product.current_price is None:
+            # ALARM: the DOM *is* rendered, yet JSON-LD carried no offers.price.
+            # We have never observed this in the wild (every fixture has it), so
+            # if it ever fires the page layout likely changed and prices will
+            # silently stop flowing. Deliberately do NOT substitute a DOM value:
+            # the _price structure of such an unseen page is untested, and a
+            # wrong price entering price comparison is worse than a missing one.
+            # Record what the DOM shows and shout, so it's caught the day it
+            # happens (and we get a real sample to build the fixture + fallback).
+            meta['price_missing_dom_rendered'] = True
+            observed = self._dom_current_price_observed(html_content, shop_id)
+            if observed is not None:
+                meta['dom_price_observed'] = observed
+            print(f"[MakroExtractor] ALARM: JSON-LD had no offers.price but the "
+                  f"DOM is rendered for {url} — site layout likely changed. "
+                  f"current_price left empty (NOT substituted from DOM). "
+                  f"DOM price element shows: {observed}.", file=sys.stderr)
 
         product.retailer = "Makro"
         return product
+
+    # ------------------------------------------------------------------
+    # JSON-LD helpers (Makro-shaped; local to keep this class self-contained)
+    # ------------------------------------------------------------------
+    def _extract_json_ld(self, html_content: str) -> Optional[Dict[str, Any]]:
+        """Extract and parse the JSON-LD Product block from HTML."""
+        try:
+            pattern = r'<script type="application/ld\+json">(.*?)</script>'
+            for match in re.finditer(pattern, html_content, re.DOTALL):
+                try:
+                    data = json.loads(match.group(1))
+                except json.JSONDecodeError:
+                    continue
+                if isinstance(data, dict) and data.get('@type') == 'Product':
+                    return data
+                if isinstance(data, list):
+                    for item in data:
+                        if isinstance(item, dict) and item.get('@type') == 'Product':
+                            return item
+        except Exception:
+            pass
+        return None
+
+    @staticmethod
+    def _dig(obj: Any, path: str) -> Any:
+        """Walk a dot-path (e.g. 'offers.price') through nested dicts.
+
+        Makro's JSON-LD `offers` is normally a dict, but per schema.org it may be
+        a list; in that case we read the first offer. Returns None if any hop is
+        missing.
+        """
+        cur = obj
+        for key in path.split('.'):
+            if isinstance(cur, list):
+                cur = cur[0] if cur else None
+            if not isinstance(cur, dict):
+                return None
+            cur = cur.get(key)
+        return cur
+
+    @staticmethod
+    def _to_number(value: Any) -> Optional[float]:
+        """Normalize a price-ish value to a rounded float, or None if not numeric."""
+        if value is None:
+            return None
+        try:
+            return round(float(str(value).replace(',', '').strip()), 2)
+        except (ValueError, TypeError):
+            return None
+
+    @staticmethod
+    def _norm_text(value: Any) -> Optional[str]:
+        """Normalize a text value to a trimmed string, or None if empty."""
+        if value is None:
+            return None
+        text = ' '.join(str(value).split()).strip()
+        return text or None
+
+    def _resolve_images(self, jl_images: Any, _unused: Any = None) -> List[str]:
+        """JSON-LD `image` may be a single URL string or a list; normalize to list."""
+        if not jl_images:
+            return []
+        if isinstance(jl_images, str):
+            return [jl_images]
+        if isinstance(jl_images, list):
+            return [img for img in jl_images if img]
+        return []
+
+    def _calc_unit_price(self, current_price: Optional[float],
+                         size: str) -> Optional[float]:
+        """Divide the pack price by the pack quantity parsed from the size string.
+
+        "20 หน่วย" -> qty 20 -> unit_price = current_price / 20. If no leading
+        quantity is found, unit_price equals current_price (a pack of one).
+        """
+        if current_price is None:
+            return None
+        if size:
+            m = re.match(r'^\s*(\d+(?:\.\d+)?)', size)
+            if m:
+                qty = float(m.group(1))
+                if qty > 1:
+                    return round(current_price / qty, 2)
+        return current_price
+
+    # ------------------------------------------------------------------
+    # Rendered-DOM helpers (anchored on stable data-test-id attributes)
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _strip_tags(text: str) -> str:
+        """Drop tags/entities from a captured DOM fragment and collapse spaces."""
+        text = re.sub(r'<[^>]+>', ' ', text or '')
+        text = text.replace('&nbsp;', ' ')
+        return ' '.join(text.split()).strip()
+
+    def _dom_brand(self, html_content: str) -> Optional[str]:
+        """Brand from the DOM brand_title element (JSON-LD has no brand for Makro).
+
+        Renders as: <... data-test-id="brand_title"><div ...>ARO GOLD</div>...
+        """
+        m = re.search(r'data-test-id="brand_title"[^>]*>\s*<[^>]+>([^<]+)<',
+                      html_content, re.DOTALL)
+        if not m:
+            return None
+        brand = self._strip_tags(m.group(1))
+        return brand or None
+
+    def _dom_sku(self, html_content: str) -> Optional[str]:
+        """SKU (article code) from the DOM code element — the clean value shown to
+        users, e.g. `31915` (not the messy URL slug).
+
+        Renders as: <... data-test-id="makro_code_title">Code : 31915</div>
+        The label is i18n ("Code : {{sku}}" / "รหัส : {{sku}}"), so take the part
+        after the ":" separator.
+        """
+        m = re.search(r'data-test-id="makro_code_title"[^>]*>([^<]+)<',
+                      html_content, re.DOTALL)
+        if not m:
+            return None
+        text = self._strip_tags(m.group(1)).strip()
+        if ':' in text:
+            # Drop only the label prefix ("Code :" / "รหัส :") — split on the FIRST
+            # colon so a sku that itself contains ":" is preserved intact.
+            text = text.split(':', 1)[1]
+        return text.strip() or None
+
+    @staticmethod
+    def _shopify_id(url: Optional[str], json_ld: Dict[str, Any]) -> Optional[str]:
+        """The Shopify numeric id used to key the main product's DOM price elements.
+
+        Prefer the URL's trailing id (…/p/835081-6974707695811 -> 6974707695811,
+        …/p/product-487900393685730 -> 487900393685730); fall back to JSON-LD
+        productID / @id (gid://shopify/Product/<id>). The article prefix may be
+        alphanumeric or contain dashes (…/p/KOBE-YA-8697… , …/p/M-02-12-01-779…),
+        so match the trailing numeric run rather than assuming a numeric prefix.
+        """
+        if url:
+            m = re.search(r'/p/[^/?#]*?(\d+)(?:[/?#]|$)', url)
+            if m:
+                return m.group(1)
+        pid = json_ld.get('productID') or json_ld.get('@id') or ''
+        m = re.search(r'(\d+)\s*$', str(pid))
+        return m.group(1) if m else None
+
+    def _dom_original_price(self, html_content: str,
+                            shop_id: Optional[str]) -> Optional[float]:
+        """The strike-through price from the gid-keyed _original_price element."""
+        if not shop_id:
+            return None
+        m = re.search(
+            r'data-test-id="gid://shopify/Product/%s_original_price"[^>]*>(.*?)</'
+            % re.escape(shop_id), html_content, re.DOTALL)
+        if not m:
+            return None
+        return self._to_number(self._strip_tags(m.group(1)).replace('฿', ''))
+
+    def _dom_current_price_observed(self, html_content: str,
+                                    shop_id: Optional[str]) -> Optional[float]:
+        """Read the gid-keyed current-price element from the DOM — for the ALARM
+        below (observability) ONLY, never to substitute current_price.
+
+        The main-product price renders with the baht sign and the number in
+        SEPARATE <p> tags ("<p>฿</p><p>83</p>"), unlike _original_price
+        ("<p>฿ 48</p>"). So we cannot reuse the non-greedy ">(.*?)</" capture —
+        it stops at the first "</p>" and would grab only "฿". Instead grab a
+        bounded window after the attribute, strip tags, and pull the first baht
+        number out. Best-effort: a None here just means the alarm reports no
+        observed value, which is fine.
+        """
+        if not shop_id:
+            return None
+        m = re.search(
+            r'data-test-id="gid://shopify/Product/%s_price"[^>]*>(.{0,160})'
+            % re.escape(shop_id), html_content, re.DOTALL)
+        if not m:
+            return None
+        text = self._strip_tags(m.group(1)).replace('฿', ' ')
+        num = re.search(r'\d[\d,]*(?:\.\d+)?', text)
+        return self._to_number(num.group(0)) if num else None
+
+    def _dom_volume(self, html_content: str) -> Optional[str]:
+        """Pack size string from the DOM unit_type_title (e.g. '1 unit(s)').
+
+        Absent for weighted (kg) products, which have no unit_type_title element.
+        """
+        m = re.search(r'data-test-id="unit_type_title"[^>]*>([^<]+)</',
+                      html_content, re.DOTALL)
+        if not m:
+            return None
+        return self._strip_tags(m.group(1)) or None
+
+    def _dom_step_prices(self, html_content: str) -> List[list]:
+        """Build [[min_qty, unit_price], ...] from the slab tier elements.
+
+        Each rung renders as a pair of stable attributes:
+            data-test-id="unit_tier_{N}"   ->  "1 - 3 units" / "8+ units" / "10+ kg"
+            data-test-id="price_tier_{N}"   ->  "฿ 38"   (unit) / "฿ 78/kg"  (weighed)
+        tier_0 is the base rung, so this list already starts at [1, base_price].
+        Returns [] for products with no slab section (~70% of products).
+        min_qty is the first integer in the unit label; price is parsed as float.
+
+        Weighed (kg) products render a per-unit suffix on the price
+        ("฿ 78/kg"), so we pull the baht number out with a regex rather than
+        stripping the "฿" and feeding the whole string to _to_number — the
+        latter chokes on the "/kg" tail and silently drops the whole ladder.
+        """
+        steps: List[list] = []
+        n = 0
+        while True:
+            um = re.search(r'data-test-id="unit_tier_%d"[^>]*>(.*?)</div>' % n,
+                           html_content, re.DOTALL)
+            pm = re.search(r'data-test-id="price_tier_%d"[^>]*>(.*?)</div>' % n,
+                           html_content, re.DOTALL)
+            if not um or not pm:
+                break
+            qty_match = re.search(r'\d+', self._strip_tags(um.group(1)))
+            price_match = re.search(r'฿\s*([\d,]+(?:\.\d+)?)',
+                                    self._strip_tags(pm.group(1)))
+            price = self._to_number(price_match.group(1)) if price_match else None
+            if qty_match and price is not None:
+                steps.append([int(qty_match.group()), price])
+            n += 1
+        return steps
+
+    def _next_data_step_prices(self, html_content: str, sku: Optional[str],
+                               current_price: Optional[float]) -> List[list]:
+        """Fallback slab ladder from __NEXT_DATA__, for when the DOM slab is empty.
+
+        The DOM "Buy more save more!" section is client-rendered and needs a
+        SCROLLED browser render, so it silently vanishes if the render/scroll
+        fell short. __NEXT_DATA__ carries the same tiers in the INITIAL server
+        HTML at the stable path props.pageProps.product.slabPrices.slabPriceTiers
+        (no scroll needed) — an uncorrelated source for exactly that failure.
+
+        Returns [[min_qty, unit_price], ...] starting at [1, current_price]
+        (slabPriceTiers omits the base rung), or [] when unavailable — a whole
+        ladder or nothing, never partial. Guards:
+          - current_price must exist: the base rung [1, current_price] is
+            required, so without it we cannot build a valid ladder.
+          - the node's own `sku` must match the extracted sku, so we never read
+            a wrong/related product node from the blob.
+        """
+        if current_price is None:
+            return []
+        m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>',
+                      html_content, re.DOTALL)
+        if not m:
+            return []
+        try:
+            data = json.loads(m.group(1))
+            node = data['props']['pageProps']['product']
+        except (json.JSONDecodeError, KeyError, TypeError):
+            return []
+        if not isinstance(node, dict):
+            return []
+        # Safety: only trust the node if its sku matches the one we extracted
+        # (mirrors the gid-keying used for the DOM original_price).
+        node_sku = node.get('sku')
+        if sku and node_sku is not None and str(node_sku) != str(sku):
+            return []
+        tiers = (node.get('slabPrices') or {}).get('slabPriceTiers') or []
+        if not isinstance(tiers, list):
+            return []
+        ladder = [[1, current_price]]
+        for t in tiers:
+            if not isinstance(t, dict):
+                continue
+            qty = t.get('quantity')
+            price = self._to_number(t.get('priceInVat'))
+            if qty is None or price is None:
+                continue
+            try:
+                qty = int(qty)
+            except (ValueError, TypeError):
+                continue
+            ladder.append([qty, price])
+        if len(ladder) == 1:  # only the base rung -> no real slab data
+            return []
+        ladder.sort(key=lambda r: r[0])
+        return ladder
 
 
 def get_extractor(url: str) -> ProductExtractor:
@@ -3064,6 +3364,7 @@ def get_extractor(url: str) -> ProductExtractor:
     elif 'globalhouse.co.th' in domain:
         return GlobalHouseExtractor(url)
     elif 'makro.pro' in domain:
+        # JSON-LD + rendered DOM (+ __NEXT_DATA__ step_prices fallback).
         return MakroExtractor(url)
     else:
         return ProductExtractor(url)

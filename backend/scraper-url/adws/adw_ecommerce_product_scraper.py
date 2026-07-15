@@ -7,6 +7,7 @@
 #   "click",
 #   "rich",
 #   "crawl4ai",
+#   "psycopg2-binary",
 # ]
 # ///
 """
@@ -254,6 +255,15 @@ async def extract_product_data(url: str, wrapper: Crawl4AIWrapper, adw_id: str, 
             # GlobalHouse with location selection - wait for location selection JavaScript to complete
             # Check for SUCCESS or ERROR message in page content
             wait_for = "() => document.body.innerText.includes('SUCCESS: Location selection complete') || document.body.innerText.includes('[LOCATION ERROR]')"
+        elif 'makro.pro' in url:
+            # MakroExtractor reads the client-rendered slab (step-price) tiers
+            # from the DOM. Those tier elements (data-test-id="unit_tier_N") mount
+            # late; the wrapper's generic scroll/tab JS otherwise captures HTML
+            # before they appear, yielding empty step_prices. Wait for the first
+            # tier to mount (slab products settle in ~2s), capped by page time so
+            # no-slab products (~70%, tier never appears) proceed instead of
+            # hanging to page_timeout.
+            wait_for = "() => document.querySelector('[data-test-id=\"unit_tier_0\"]') !== null || performance.now() > 7000"
         else:
             # Default wait condition for other retailers (Thai Watsadu, DoHome, MegaHome, Global House without location)
             # Ensure page has meaningful content before scraping
@@ -576,6 +586,12 @@ def generate_summary_stats(products: List[ProductData]) -> Dict[str, Any]:
     default=None,
     help="GlobalHouse location name for price by location (e.g., 'นครปฐม', 'ขอนแก่น')"
 )
+@click.option(
+    "--output-db",
+    is_flag=True,
+    help="Upsert scraped products straight into the products table (cfw schema). "
+         "Runs in addition to the JSON output. Requires DB_* creds in backend/.env."
+)
 def main(
     url: Optional[str],
     urls_file: Optional[str],
@@ -593,6 +609,7 @@ def main(
     use_browser: bool,
     test: bool,
     gbh_location: Optional[str],
+    output_db: bool,
 ):
     """E-commerce product data scraper."""
 
@@ -905,6 +922,26 @@ def main(
                 border_style="green",
             )
         )
+
+        # Optional: upsert straight into the products table (cfw schema).
+        # Runs in addition to the JSON output; failures here do not lose the JSON.
+        if output_db and products:
+            print_status_panel(console, f"Writing {len(products)} products to DB", adw_id, "output-db")
+            try:
+                from adw_modules.db_writer import upsert_products
+                db_summary = upsert_products(products)
+                print_status_panel(
+                    console,
+                    f"DB upsert: {db_summary['inserted']} inserted, "
+                    f"{db_summary['updated']} updated, "
+                    f"{db_summary['skipped']} skipped, "
+                    f"{db_summary['errors']} errors",
+                    adw_id, "output-db",
+                    "success" if db_summary["errors"] == 0 else "warning",
+                )
+            except Exception as e:
+                print_status_panel(console, f"DB write failed: {e}", adw_id, "output-db", "error")
+                print(f"[SCRAPER] DB write failed: {e}", flush=True, file=sys.stderr)
 
         # Exit with appropriate code
         # import sys
