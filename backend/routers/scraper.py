@@ -135,6 +135,11 @@ def scrape_single_url(url: str) -> dict:
                 except Exception:
                     pass
 
+        # Forward the subprocess's [SCRAPER] lines to the server log (e.g. which extractor was used)
+        for line in (stderr or "").splitlines():
+            if "[SCRAPER]" in line:
+                logger.info("%s", line.strip())
+
         if returncode != 0:
             logger.warning("[SCRAPER] FAILED rc=%d %s\nSTDERR: %s", returncode, url, stderr[-500:])
             return {"success": False, "url": url, "error": f"Scraper failed (exit {returncode})"}
